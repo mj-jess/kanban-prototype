@@ -1,22 +1,20 @@
-import type { JSX, ReactNode } from 'react';
+import type { CSSProperties, JSX, ReactNode } from 'react';
 import styles from './Typography.module.scss';
 
 type Props = {
     children: ReactNode;
-    color?: 'danger';
     className?: string;
+    style?: CSSProperties;
 };
 
-function createTypography(
-    tag: keyof JSX.IntrinsicElements,
-    variant: keyof typeof styles,
-    color?: 'danger',
-) {
-    return ({ children, className = '' }: Props) => {
+function createTypography(tag: keyof JSX.IntrinsicElements, variant: keyof typeof styles) {
+    return ({ children, className = '', style }: Props) => {
         const Tag = tag;
 
         return (
-            <Tag className={`${styles.typography} ${styles[variant]} ${className}`}>{children}</Tag>
+            <Tag className={`${styles.typography} ${styles[variant]} ${className}`} style={style}>
+                {children}
+            </Tag>
         );
     };
 }
