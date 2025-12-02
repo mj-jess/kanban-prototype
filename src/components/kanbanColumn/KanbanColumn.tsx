@@ -3,22 +3,22 @@ import styles from './KanbanColumn.module.scss';
 import { useState } from 'react';
 import { FaPen, FaPlus } from 'react-icons/fa6';
 
-import { useAppDispatch } from '@/store';
-import type { Column, Task } from '@/types';
+import { useModal } from '@/hooks';
+import type { Column } from '@/types';
 
 import { Button, Typography } from '@/ui';
-import KanbanCard from '../kanbanCard/KanbanCard';
 import ColumnTitle from './ColumnTitle';
+import AddTaskModal from '../AddTaskModal';
+import KanbanCard from '../kanbanCard/KanbanCard';
 
 interface Props {
     column: Column;
 }
 
 export default function KanbanColumn({ column }: Props) {
-    const dispatch = useAppDispatch();
+    const { show, openModal, closeModal } = useModal();
 
     const [isEditing, setIsEditing] = useState(false);
-    const [tasks, setTasks] = useState<Task[]>(column.tasks);
 
     return (
         <div className={styles.column}>
@@ -39,20 +39,29 @@ export default function KanbanColumn({ column }: Props) {
                 </Button>
             </div>
 
-            {tasks.length > 0 && (
+            {column.tasks.length > 0 && (
                 <div className={styles.tasks}>
-                    {tasks.map((task) => (
+                    {column.tasks.map((task) => (
                         <KanbanCard key={task.id} task={task} columnId={column.id} />
                     ))}
                 </div>
             )}
 
             <div className={styles.footer}>
-                <Button fullWidth variant="ghost" color="tertiary" size="none" align="left">
+                <Button
+                    fullWidth
+                    variant="ghost"
+                    color="tertiary"
+                    size="none"
+                    align="left"
+                    onClick={openModal}
+                >
                     <FaPlus />
                     <Typography.span>Adicionar uma task</Typography.span>
                 </Button>
             </div>
+
+            <AddTaskModal columnId={column.id} show={show} closeModal={closeModal} />
         </div>
     );
 }
