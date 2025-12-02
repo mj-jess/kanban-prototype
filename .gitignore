@@ -1,0 +1,66 @@
+# --- NODE ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+.pnpm-store/
+
+# --- BUILD ---
+dist/
+build/
+temp/
+tmp/
+.cache/
+.next/
+out/
+
+# --- TYPESCRIPT ---
+*.tsbuildinfo
+
+# --- ENVIRONMENT ---
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*
+!.env.example
+
+# --- LOGS ---
+logs/
+*.log
+*.log.*
+log.txt
+
+# --- EDITORS ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS FILES ---
+.DS_Store
+Thumbs.db
+
+# --- TEST ---
+coverage/
+.nyc_output/
+
+# --- LOCAL STORAGE DEVELOPMENT ---
+*.local.db
+
+# --- MISC ---
+*.orig
+*.bak
+*.tmp
+
+# --- REACT SPECIFIC ---
+# Parcel / Vite / Webpack caching
+.parcel-cache
+.vite
+vite.config.ts.timestamp*
+
+# --- DOCKER ---
+docker-data/
