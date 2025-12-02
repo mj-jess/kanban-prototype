@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import type { Column } from '@/types';
 
-import { editColumn } from '@/store/kanbanSlice';
+import { kanbanActions } from '@/store/kanbanSlice';
 import { useAppDispatch } from '@/store';
 
 import { Typography } from '@/ui';
@@ -26,7 +26,7 @@ export default function ColumnTitle({ column, isEditing, closeEditing }: Props) 
             return;
         }
 
-        dispatch(editColumn({ id: column.id, title }));
+        dispatch(kanbanActions.editColumn({ id: column.id, title }));
         setError('');
 
         closeEditing();

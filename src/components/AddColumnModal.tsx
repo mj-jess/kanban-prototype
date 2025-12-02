@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/store';
-import { addColumn } from '@/store/kanbanSlice';
+import { kanbanActions } from '@/store/kanbanSlice';
 import { Button, Modal, Typography } from '@/ui';
 import { useMemo, useState } from 'react';
 
@@ -41,14 +41,14 @@ export default function AddColumnModal({ show, closeModal }: Props) {
             isOpen={show}
             onClose={resetModal}
             onSubmit={() => {
-                dispatch(addColumn({ id: crypto.randomUUID(), title }));
+                dispatch(kanbanActions.addColumn({ id: crypto.randomUUID(), title }));
                 resetModal();
             }}
         >
             <Modal.Header onClose={closeModal}>Adicionar nova Coluna</Modal.Header>
 
             <Modal.Body>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
+                <div className="form-wrapper">
                     <Typography.label>Nome</Typography.label>
 
                     <input
