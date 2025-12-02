@@ -13,17 +13,17 @@
     user-select: none;
 
     padding: 6px 16px;
-    transition:
-        background 0.15s ease,
-        color 0.15s ease,
-        border-color 0.15s ease,
-        filter 0.15s ease,
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, filter 0.15s ease,
         opacity 0.2s ease;
 
     &.disabled {
         opacity: 0.5;
         cursor: not-allowed;
         pointer-events: none;
+    }
+
+    &.w-full {
+        width: 100%;
     }
 }
 
@@ -58,6 +58,26 @@
 .size-lg {
     padding: 8px 20px;
     font-size: 15px;
+}
+
+/* ---------------- ALIGN ---------------- */
+.align-left {
+    text-align: left;
+    justify-content: flex-start;
+}
+
+.align-center {
+    text-align: center;
+    justify-content: center;
+}
+
+.align-right {
+    text-align: right;
+    justify-content: flex-end;
+}
+
+.align-justify {
+    text-align: justify;
 }
 
 /* ---------------- COLOR MAP ---------------- */
