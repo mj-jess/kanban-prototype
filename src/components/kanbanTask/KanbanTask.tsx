@@ -1,5 +1,4 @@
-// KanbanCard.tsx
-import styles from './KanbanCard.module.scss';
+import styles from './KanbanTask.module.scss';
 import type { Task } from '@/types';
 import { useAppDispatch } from '@/store';
 // import { startDragTask } from '@/store/kanbanSlice';
@@ -9,7 +8,7 @@ interface Props {
     columnId: string;
 }
 
-export default function KanbanCard({ task, columnId }: Props) {
+export default function KanbanTask({ task, columnId }: Props) {
     const dispatch = useAppDispatch();
 
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {

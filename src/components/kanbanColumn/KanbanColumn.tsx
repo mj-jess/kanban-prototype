@@ -9,7 +9,7 @@ import type { Column } from '@/types';
 import { Button, Typography } from '@/ui';
 import ColumnTitle from './ColumnTitle';
 import AddTaskModal from '../AddTaskModal';
-import KanbanCard from '../kanbanCard/KanbanCard';
+import KanbanTask from '../kanbanTask/KanbanTask';
 
 interface Props {
     column: Column;
@@ -42,7 +42,7 @@ export default function KanbanColumn({ column }: Props) {
             {column.tasks.length > 0 && (
                 <ul className={styles.tasks}>
                     {column.tasks.map((task) => (
-                        <KanbanCard key={task.id} task={task} columnId={column.id} />
+                        <KanbanTask key={task.id} task={task} columnId={column.id} />
                     ))}
                 </ul>
             )}
