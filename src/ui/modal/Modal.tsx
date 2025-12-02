@@ -29,12 +29,14 @@ export function Modal({ isOpen, children, onClose, onSubmit }: ModalProps) {
     );
 }
 
-function Header({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+function Header({ children, onClose }: { children: React.ReactNode; onClose?: () => void }) {
     return (
         <div className={styles.header}>
-            <Typography.h3>{children}</Typography.h3>
+            <Typography.h4>{children}</Typography.h4>
 
-            <FaX className={styles.closeIcon} onClick={onClose} />
+            {onClose && (
+                <FaX className={styles.closeIcon} onClick={onClose} style={{ cursor: 'pointer' }} />
+            )}
         </div>
     );
 }
