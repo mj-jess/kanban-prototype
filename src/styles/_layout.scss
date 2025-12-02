@@ -3,8 +3,10 @@
 :root {
     --sidebar-w: 300px;
     --sidebar-w-collapsed: 80px;
+
+    --sidebar-backdrop-z: 30;
     --sidebar-z: 40;
-    --backdrop-z: 30;
+    --modal-z: 50;
 }
 
 /* -------------------------------------------------------------------
@@ -154,7 +156,7 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.45);
-    z-index: var(--backdrop-z);
+    z-index: var(--sidebar-backdrop-z);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease;
@@ -195,11 +197,5 @@
 
     .content-shell .content {
         padding: var(--space-5);
-    }
-}
-
-@media (min-width: $bp-xl) {
-    .content-shell .content {
-        padding: var(--space-6);
     }
 }
