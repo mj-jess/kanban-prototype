@@ -1,0 +1,130 @@
+@use 'sass:meta';
+@use 'sass:list';
+@use 'sass:map';
+@use '../../styles/mixins' as mixins;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+$font-sans: 'Inter', sans-serif !default;
+$font-heading: 'Poppins', sans-serif !default;
+$font-mono: 'JetBrains Mono', monospace !default;
+
+$type-scales: (
+    h1: (
+        font: heading,
+        size: (
+            28px,
+            4.5vw,
+            48px,
+        ),
+        weight: 700,
+        lh: 1.25,
+    ),
+    h2: (
+        font: heading,
+        size: (
+            22px,
+            3.5vw,
+            34px,
+        ),
+        weight: 600,
+        lh: 1.375,
+    ),
+    h3: (
+        font: heading,
+        size: (
+            18px,
+            3vw,
+            26px,
+        ),
+        weight: 600,
+        lh: 1.375,
+    ),
+    h4: (
+        font: heading,
+        size: (
+            16px,
+            2.5vw,
+            20px,
+        ),
+        weight: 600,
+        lh: 1.4,
+    ),
+    p: (
+        font: sans,
+        size: (
+            14px,
+            1.2vw,
+            16px,
+        ),
+        weight: 400,
+        lh: 1.625,
+    ),
+    span: (
+        font: sans,
+        size: (
+            13px,
+            1vw,
+            14px,
+        ),
+        weight: 400,
+        lh: 1.6,
+    ),
+    small: (
+        font: sans,
+        size: (
+            12px,
+            0.9vw,
+            14px,
+        ),
+        weight: 400,
+        lh: 1.5,
+    ),
+    label: (
+        font: sans,
+        size: (
+            13px,
+            1vw,
+            14px,
+        ),
+        weight: 500,
+        lh: 1.5,
+    ),
+    caption: (
+        font: mono,
+        size: (
+            11px,
+            0.8vw,
+            12px,
+        ),
+        weight: 300,
+        lh: 1.375,
+    ),
+);
+
+.typography {
+    margin: 0;
+    color: var(--text);
+}
+
+@function _t-font($key) {
+    @return if($key == heading, $font-heading, if($key == mono, $font-mono, $font-sans));
+}
+
+@each $variant, $cfg in $type-scales {
+    .#{$variant} {
+        $font-key: map.get($cfg, font);
+        $size: map.get($cfg, size);
+        $weight: map.get($cfg, weight);
+        $lh: map.get($cfg, lh);
+
+        font-family: _t-font($font-key);
+
+        @include mixins.clamp(list.nth($size, 1), list.nth($size, 2), list.nth($size, 3));
+
+        font-weight: $weight;
+        line-height: $lh;
+
+        color: var(--text);
+    }
+}

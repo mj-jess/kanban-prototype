@@ -1,0 +1,81 @@
+/* ---------------- BREAKPOINTS ---------------- */
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+
+/* ---------------- SPACING / RADIUS ---------------- */
+$space: (
+    1: 4px,
+    2: 8px,
+    3: 12px,
+    4: 16px,
+    5: 24px,
+    6: 32px,
+);
+
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+
+/* ---------------- SHADOWS ---------------- */
+$shadow-soft: 0px 1px 5px -2px rgba(0, 0, 0, 0.35);
+
+/* ---------------- FONT ---------------- */
+$font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Helvetica,
+    Arial, sans-serif;
+
+/* ======================================================================
+   🌙 DARK THEME (default)
+   ====================================================================== */
+:root,
+[data-theme='dark'] {
+    --bg-1: #0c0e12;
+    --bg-2: #12151b;
+
+    --border: #2a2f3a;
+
+    --text: #f3f5f7;
+    --text-soft: #a3acba;
+
+    --primary: #3ba9ff;
+    --primary-soft: rgba(59, 169, 255, 0.15);
+
+    --secondary: #14b8a6;
+    --secondary-soft: rgba(20, 184, 166, 0.2);
+
+    --danger: #ef4444;
+
+    --radius-sm: #{$radius-sm};
+    --radius-md: #{$radius-md};
+    --radius-lg: #{$radius-lg};
+
+    @each $key, $val in $space {
+        --space-#{$key}: #{$val};
+    }
+
+    --shadow-soft: #{$shadow-soft};
+    --font-family: #{$font-family};
+}
+
+/* ======================================================================
+   ☀️ LIGHT THEME
+   ====================================================================== */
+[data-theme='light'] {
+    --bg-1: #f5f7fa;
+    --bg-2: #ffffff;
+
+    --border: #d9dee7;
+
+    --text: #1c1f23;
+    --text-soft: #6c737f;
+
+    --primary: #007bce;
+    --primary-soft: rgba(0, 123, 206, 0.12);
+
+    --secondary: #0d9488;
+    --secondary-soft: rgba(13, 148, 136, 0.12);
+    --secondary-text: #ffffff;
+
+    --danger: #ef4444;
+}

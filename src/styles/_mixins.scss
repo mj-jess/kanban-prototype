@@ -1,0 +1,9 @@
+@mixin clamp($min, $pref, $max) {
+    font-size: clamp($min, $pref, $max);
+}
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

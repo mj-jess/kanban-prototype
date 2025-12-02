@@ -1,0 +1,17 @@
+.board {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-5);
+
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: var(--space-4);
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.columns {
+    display: flex;
+    gap: var(--space-5);
+}

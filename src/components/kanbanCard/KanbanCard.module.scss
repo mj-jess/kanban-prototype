@@ -1,0 +1,42 @@
+@use '../../styles/tokens' as *;
+
+.card {
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    color: var(--text);
+
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+
+    box-shadow: var(--shadow-soft);
+    transition: background 0.2s ease, border 0.2s ease, transform 0.15s ease;
+
+    cursor: grab;
+    user-select: none;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+
+    &:hover {
+        background: var(--primary-soft);
+        border-color: var(--primary);
+    }
+
+    &.isDragging {
+        opacity: 0.75;
+        transform: scale(0.97);
+    }
+
+    .title {
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.4;
+        color: var(--text);
+    }
+
+    .meta {
+        font-size: 13px;
+        color: var(--text-soft);
+    }
+}
