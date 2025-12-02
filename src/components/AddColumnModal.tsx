@@ -1,101 +1,58 @@
-import { useKanbanStore } from '@/store/useKanbanStore';
+import { useAppDispatch } from '@/store';
+import { addColumn } from '@/store/kanbanSlice';
 import { Button, Modal, Typography } from '@/ui';
 import { useMemo, useState } from 'react';
 
 interface Props {
     show: boolean;
     closeModal: () => void;
-    onSubmit: (form: { id: string; title: string }) => void;
 }
 
-export default function AddColumnModal({ show, closeModal, onSubmit }: Props) {
-    const { columns } = useKanbanStore();
+export default function AddColumnModal({ show, closeModal }: Props) {
+    const dispatch = useAppDispatch();
 
-    const columnNames = useMemo(() => columns.map((column) => column.id.toLowerCase()), [columns]);
-
-    const [id, setId] = useState('');
     const [title, setTitle] = useState('');
     const [isDirty, setIsDirty] = useState(false);
-    const [validation, setValidation] = useState({ title: '', id: '' });
+    const [validation, setValidation] = useState({ title: '' });
 
-    const validateId = (id: string) => {
-        if (id.trim() === '') {
-            setValidation((p) => ({
-                ...p,
-                id: id.trim() === '' ? 'Identificação é obrigatório.' : '',
-            }));
-        } else if (columnNames.includes(id.toLowerCase())) {
-            setValidation((p) => ({ ...p, id: 'Identificação já existe.' }));
-        } else {
-            setValidation((p) => ({ ...p, id: '' }));
-        }
-    };
-
-    const validateTitle = (title: string) => {
-        setValidation((p) => ({ ...p, title: title.trim() === '' ? 'Nome é obrigatório.' : '' }));
+    const validateTitle = (value: string) => {
+        setValidation((p) => ({
+            ...p,
+            title: !value.trim() ? 'Nome é obrigatório.' : '',
+        }));
     };
 
     const disabled = useMemo(() => {
         if (!isDirty) return true;
-        if (!id.trim() || !title.trim()) return true;
+        if (!title.trim()) return true;
 
-        return validation.id !== '' || validation.title !== '';
-    }, [isDirty, validation, id, title]);
+        return !!validation.title;
+    }, [isDirty, title, validation]);
+
+    const resetModal = () => {
+        closeModal();
+        setTitle('');
+        setIsDirty(false);
+        setValidation({ title: '' });
+    };
 
     return (
         <Modal
             isOpen={show}
-            onClose={closeModal}
-            onSubmit={(e) => {
-                e.preventDefault();
-                onSubmit({ id, title });
-
-                setId('');
-                setTitle('');
-                setValidation({ title: '', id: '' });
-                setIsDirty(false);
+            onClose={resetModal}
+            onSubmit={() => {
+                dispatch(addColumn({ id: crypto.randomUUID(), title }));
+                resetModal();
             }}
         >
             <Modal.Header onClose={closeModal}>Adicionar nova Coluna</Modal.Header>
 
             <Modal.Body>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 'var(--space-1)',
-                    }}
-                >
-                    <Typography.label>Identificação</Typography.label>
-                    <input
-                        autoFocus
-                        type="text"
-                        name="key"
-                        value={id}
-                        className="form-control"
-                        onChange={(e) => {
-                            setId(e.target.value);
-                            validateId(e.target.value);
-                            setIsDirty(true);
-                        }}
-                    />
-                    {validation.id && (
-                        <Typography.caption className="is-invalid">
-                            {validation.id}
-                        </Typography.caption>
-                    )}
-                </div>
-
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 'var(--space-1)',
-                    }}
-                >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}>
                     <Typography.label>Nome</Typography.label>
 
                     <input
+                        autoFocus
                         type="text"
                         name="title"
                         value={title}

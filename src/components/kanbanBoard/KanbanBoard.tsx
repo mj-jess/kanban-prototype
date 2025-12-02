@@ -1,44 +1,40 @@
 import styles from './KanbanBoard.module.scss';
 import KanbanColumn from '../kanbanColumn/KanbanColumn';
-import { useKanbanStore } from '@/store/useKanbanStore';
+
 import { Button } from '@/ui';
 import { FaPlus } from 'react-icons/fa6';
 import { useModal } from '@/hooks';
+
+import { useAppSelector } from '@/store';
+
 import AddColumnModal from '../AddColumnModal';
 
 export default function KanbanBoard() {
-    const { show, openModal, closeModal } = useModal();
-    const { columns, updateTaskOrder, moveTask, addColumn } = useKanbanStore();
+    const columns = useAppSelector((state) => state.kanban.columns);
 
-    const handleAddColumn = (fields: { id: string; title: string }) => {
-        console.log('adding column', fields);
-        addColumn({ ...fields, tasks: [] });
-        closeModal();
-    };
+    const { show, openModal, closeModal } = useModal();
 
     return (
         <div className={styles.board}>
-            <div className={styles.columns}>
-                {columns.map((column) => (
-                    <KanbanColumn
-                        key={column.id}
-                        column={column}
-                        onTaskOrderChange={(tasks) => updateTaskOrder(column.id, tasks)}
-                        onTaskMove={(target, task) => moveTask(column.id, target, task)}
-                    />
-                ))}
-            </div>
+            {columns.length > 0 && (
+                <div className={styles.columns}>
+                    {columns.map((column) => (
+                        <KanbanColumn key={column.id} column={column} />
+                    ))}
+                </div>
+            )}
 
-            <div>
-                <Button onClick={openModal}>
-                    <FaPlus /> Add Column
+            <div className={styles.addColumnBtn}>
+                <Button
+                    color="primary"
+                    variant="outline"
+                    onClick={openModal}
+                    style={{ whiteSpace: 'nowrap' }}
+                >
+                    <FaPlus /> Adicionar coluna
                 </Button>
 
-                <AddColumnModal
-                    show={show}
-                    closeModal={closeModal}
-                    onSubmit={(fields) => handleAddColumn(fields)}
-                />
+                <AddColumnModal show={show} closeModal={closeModal} />
             </div>
         </div>
     );
