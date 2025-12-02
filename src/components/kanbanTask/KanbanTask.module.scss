@@ -56,3 +56,12 @@
         }
     }
 }
+
+.taskPlaceholder {
+    height: 60px;
+    background: var(--bg-1);
+    border: 2px dashed var(--secondary);
+    border-radius: var(--radius-md);
+    margin: var(--space-2) 0;
+    transition: all 0.15s ease;
+}

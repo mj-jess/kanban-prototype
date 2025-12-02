@@ -3,10 +3,12 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface KanbanState {
     columns: Column[];
+    draggingTaskId: string | null;
 }
 
 const initialState: KanbanState = {
     columns: [],
+    draggingTaskId: null,
 };
 
 export const kanbanSlice = createSlice({
@@ -31,6 +33,10 @@ export const kanbanSlice = createSlice({
 
         removeColumn(state: KanbanState, action: PayloadAction<string>) {
             state.columns = state.columns.filter((col) => col.id !== action.payload);
+        },
+
+        setDraggingTask: (state, action: PayloadAction<string | null>) => {
+            state.draggingTaskId = action.payload;
         },
 
         addTask: (
@@ -60,29 +66,32 @@ export const kanbanSlice = createSlice({
             }
         },
 
-        updateTaskOrder: (
-            state: KanbanState,
-            action: PayloadAction<{ columnId: string; tasks: Task[] }>,
+        moveTaskWithIndex: (
+            state,
+            action: PayloadAction<{
+                fromColumnId: string;
+                toColumnId: string;
+                taskId: string;
+                destinationIndex: number; // O índice exato onde será inserida
+            }>,
         ) => {
-            const col = state.columns.find((c) => c.id === action.payload.columnId);
+            const { fromColumnId, toColumnId, taskId, destinationIndex } = action.payload;
 
-            if (col) {
-                col.tasks = action.payload.tasks;
-            }
-        },
-
-        moveTask: (
-            state: KanbanState,
-            action: PayloadAction<{ from: string; to: string; task: Task }>,
-        ) => {
-            const { from, to, task } = action.payload;
-            const toCol = state.columns.find((c) => c.id === to);
-            const fromCol = state.columns.find((c) => c.id === from);
+            const fromCol = state.columns.find((c) => c.id === fromColumnId);
+            const toCol = state.columns.find((c) => c.id === toColumnId);
 
             if (!fromCol || !toCol) return;
 
-            fromCol.tasks = fromCol.tasks.filter((t) => t.id !== task.id);
-            toCol.tasks.push(task);
+            // 1. Encontra e remove a tarefa da coluna de origem
+            const taskIndex = fromCol.tasks.findIndex((t) => t.id === taskId);
+            if (taskIndex === -1) return;
+
+            const [movedTask] = fromCol.tasks.splice(taskIndex, 1);
+
+            // 2. Insere a tarefa na coluna de destino no índice correto
+            // Se for a mesma coluna e a tarefa estiver sendo movida para uma posição anterior
+            // O splice já removeu o elemento, então o destinationIndex é preciso.
+            toCol.tasks.splice(destinationIndex, 0, movedTask);
         },
     },
 });

@@ -6,16 +6,19 @@ import { FaPen, FaPlus } from 'react-icons/fa6';
 import { useModal } from '@/hooks';
 import type { Column } from '@/types';
 
+import { useAppDispatch } from '@/store';
 import { Button, Typography } from '@/ui';
 import ColumnTitle from './ColumnTitle';
 import AddTaskModal from '../AddTaskModal';
 import KanbanTask from '../kanbanTask/KanbanTask';
+import { kanbanActions } from '@/store/kanbanSlice';
 
 interface Props {
     column: Column;
 }
 
 export default function KanbanColumn({ column }: Props) {
+    const dispatch = useAppDispatch();
     const { show, openModal, closeModal } = useModal();
 
     const [isEditing, setIsEditing] = useState(false);
@@ -39,13 +42,11 @@ export default function KanbanColumn({ column }: Props) {
                 </Button>
             </div>
 
-            {column.tasks.length > 0 && (
-                <ul className={styles.tasks}>
-                    {column.tasks.map((task) => (
-                        <KanbanTask key={task.id} task={task} columnId={column.id} />
-                    ))}
-                </ul>
-            )}
+            <ul className={styles.tasks}>
+                {column.tasks.map((task, i) => (
+                    <KanbanTask key={task.id} task={task} index={i} columnId={column.id} />
+                ))}
+            </ul>
 
             <div className={styles.footer}>
                 <Button

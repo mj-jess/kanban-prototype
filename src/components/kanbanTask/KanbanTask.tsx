@@ -1,33 +1,35 @@
 import styles from './KanbanTask.module.scss';
-
 import type { Task } from '@/types';
 import { useModal } from '@/hooks';
 import { useAppDispatch, useAppSelector } from '@/store';
-
 import { Button, Modal, Typography } from '@/ui';
 import { HiMiniBars3BottomLeft } from 'react-icons/hi2';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { kanbanActions } from '@/store/kanbanSlice';
 
 interface Props {
     task: Task;
+    index: number;
     columnId: string;
 }
 
-export default function KanbanTask({ task, columnId }: Props) {
+interface PlaceholderProps {
+    show: boolean;
+}
+
+// Componente para o visual do placeholder
+const Placeholder = ({ show }: PlaceholderProps) => {
+    return show ? <div className={styles.taskPlaceholder}></div> : null;
+};
+
+export default function KanbanTask({ task, index, columnId }: Props) {
     const dispatch = useAppDispatch();
     const { show, openModal, closeModal } = useModal();
     const column = useAppSelector((state) => state.kanban.columns.find((c) => c.id === columnId));
+    const draggingTaskId = useAppSelector((state) => state.kanban.draggingTaskId);
 
     const [desc, setDesc] = useState(task.description || '');
     const [isEditingDesc, setIsEditingDesc] = useState(false);
-
-    const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-        e.dataTransfer.setData('taskId', String(task.id));
-        e.dataTransfer.setData('fromColumn', columnId);
-    };
-
-    const handleDragEnd = () => {};
 
     const handleEditTask = () => {
         dispatch(
@@ -39,22 +41,21 @@ export default function KanbanTask({ task, columnId }: Props) {
                 },
             }),
         );
-
         setDesc('');
         setIsEditingDesc(false);
     };
 
     return (
         <>
-            <div
-                draggable
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-                className={styles.task}
-                onClick={openModal}
-            >
+            {/* Placeholder para inserção ANTES falta logica booleana */}
+            <Placeholder show={false} />
+
+            <div draggable className={styles.task} onClick={openModal}>
                 <Typography.p className={styles.title}>{task.title}</Typography.p>
             </div>
+
+            {/* Placeholder para inserção DEPOIS falta logica booleana */}
+            <Placeholder show={false} />
 
             <Modal
                 isOpen={show}
@@ -65,16 +66,13 @@ export default function KanbanTask({ task, columnId }: Props) {
                 className={styles.taskModal}
             >
                 <Modal.Header onClose={closeModal}>{column?.title}</Modal.Header>
-
                 <Modal.Body>
                     <Typography.h4>{task.title}</Typography.h4>
-
                     <div className={styles.descriptionWrapper}>
                         <Typography.p className={styles.description}>
                             <HiMiniBars3BottomLeft />
                             Descrição
                         </Typography.p>
-
                         <Button
                             type="button"
                             color="tertiary"
@@ -83,7 +81,6 @@ export default function KanbanTask({ task, columnId }: Props) {
                             Editar
                         </Button>
                     </div>
-
                     <div>
                         {!isEditingDesc ? (
                             <Typography.span>{task?.description}</Typography.span>
@@ -97,7 +94,6 @@ export default function KanbanTask({ task, columnId }: Props) {
                                     onChange={(e) => setDesc(e.target.value)}
                                     placeholder="Adicione uma descrição mais detalhada..."
                                 ></textarea>
-
                                 <div
                                     style={{
                                         display: 'flex',
@@ -114,7 +110,6 @@ export default function KanbanTask({ task, columnId }: Props) {
                                     >
                                         Cancelar
                                     </Button>
-
                                     <Button type="button" onClick={handleEditTask}>
                                         Salvar
                                     </Button>
