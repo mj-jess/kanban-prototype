@@ -21,6 +21,14 @@ export const kanbanSlice = createSlice({
             state.columns.push({ ...action.payload, tasks: [] });
         },
 
+        editColumn(state: KanbanState, action: PayloadAction<{ id: string; title: string }>) {
+            const col = state.columns.find((c) => c.id === action.payload.id);
+
+            if (col) {
+                col.title = action.payload.title;
+            }
+        },
+
         removeColumn(state: KanbanState, action: PayloadAction<string>) {
             state.columns = state.columns.filter((col) => col.id !== action.payload);
         },
@@ -52,6 +60,6 @@ export const kanbanSlice = createSlice({
     },
 });
 
-export const { setColumns, addColumn, removeColumn, updateTaskOrder, moveTask } =
+export const { setColumns, addColumn, editColumn, removeColumn, updateTaskOrder, moveTask } =
     kanbanSlice.actions;
 export default kanbanSlice.reducer;

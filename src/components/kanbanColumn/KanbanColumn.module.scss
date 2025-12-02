@@ -15,15 +15,18 @@
     transition: background 0.2s ease, border 0.2s ease;
 
     .columnHeader {
+        min-height: 32px;
         display: flex;
-        gap: var(--space-1);
+        align-items: center;
         justify-content: space-between;
 
         color: var(--text);
+        gap: var(--space-1);
 
         .title {
             font-size: 14px;
             font-weight: 600;
+            padding-left: 0.75rem;
         }
     }
 

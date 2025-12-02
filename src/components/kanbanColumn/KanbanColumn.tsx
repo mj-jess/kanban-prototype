@@ -1,13 +1,14 @@
 import styles from './KanbanColumn.module.scss';
 
+import { FaPen, FaPlus } from 'react-icons/fa6';
+import { useState, type FormEvent } from 'react';
+
 import { useAppDispatch } from '@/store';
 import type { Column, Task } from '@/types';
-import { moveTask, updateTaskOrder } from '@/store/kanbanSlice';
+import { editColumn } from '@/store/kanbanSlice';
 
 import { Button, Typography } from '@/ui';
 import KanbanCard from '../kanbanCard/KanbanCard';
-import { FaPen, FaPlus } from 'react-icons/fa6';
-import { useState } from 'react';
 
 interface Props {
     column: Column;
@@ -16,26 +17,53 @@ interface Props {
 export default function KanbanColumn({ column }: Props) {
     const dispatch = useAppDispatch();
 
+    const [error, setError] = useState('');
+    const [title, setTitle] = useState(column.title);
+    const [isEditing, setIsEditing] = useState(false);
     const [tasks, setTasks] = useState<Task[]>(column.tasks);
 
-    const handleOrderChange = (tasks: Task[]) => {
-        dispatch(updateTaskOrder({ columnId: column.id, tasks }));
-    };
+    const handleEdit = (e: FormEvent) => {
+        e.preventDefault();
 
-    const handleMoveTask = (targetColumnId: string, task: Task) => {
-        dispatch(moveTask({ from: column.id, to: targetColumnId, task }));
-    };
+        if (!title.trim()) {
+            setError('Campo obrigatório.');
+            return;
+        }
 
-    const addTask = () => {
-        setTasks((p) => [...p, { id: crypto.randomUUID(), title: '', description: '' }]);
+        dispatch(editColumn({ id: column.id, title }));
+        setIsEditing(false);
+        setError('');
     };
 
     return (
         <div className={styles.column}>
             <div className={styles.columnHeader}>
-                <Typography.h4 className={styles.title}>{column.title}</Typography.h4>
+                {!isEditing ? (
+                    <Typography.h4 className={styles.title}>{title}</Typography.h4>
+                ) : (
+                    <form onSubmit={handleEdit} className="form-wrapper">
+                        <input
+                            autoFocus
+                            type="text"
+                            name="title"
+                            value={title}
+                            className="form-control"
+                            onChange={(e) => setTitle(e.target.value)}
+                            style={{ height: '32px' }}
+                        />
 
-                <Button variant="link" color="tertiary" size="none">
+                        {error && (
+                            <Typography.caption className="is-invalid">{error}</Typography.caption>
+                        )}
+                    </form>
+                )}
+
+                <Button
+                    variant="link"
+                    color="tertiary"
+                    size="none"
+                    onClick={() => setIsEditing(true)}
+                >
                     <FaPen />
                 </Button>
             </div>
@@ -43,26 +71,13 @@ export default function KanbanColumn({ column }: Props) {
             {tasks.length > 0 && (
                 <div className={styles.tasks}>
                     {tasks.map((task) => (
-                        <KanbanCard
-                            key={task.id}
-                            task={task}
-                            columnId={column.id}
-                            onMove={handleMoveTask}
-                            onOrderChange={handleOrderChange}
-                        />
+                        <KanbanCard key={task.id} task={task} columnId={column.id} />
                     ))}
                 </div>
             )}
 
             <div className={styles.footer}>
-                <Button
-                    fullWidth
-                    variant="ghost"
-                    color="tertiary"
-                    size="none"
-                    align="left"
-                    onClick={addTask}
-                >
+                <Button fullWidth variant="ghost" color="tertiary" size="none" align="left">
                     <FaPlus />
                     <Typography.span>Adicionar uma task</Typography.span>
                 </Button>
