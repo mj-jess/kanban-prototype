@@ -16,13 +16,8 @@ export default function KanbanBoard() {
 
     return (
         <div className={styles.board}>
-            {columns.length > 0 && (
-                <div className={styles.columns}>
-                    {columns.map((column) => (
-                        <KanbanColumn key={column.id} column={column} />
-                    ))}
-                </div>
-            )}
+            {columns.length > 0 &&
+                columns.map((column) => <KanbanColumn key={column.id} column={column} />)}
 
             <div className={styles.addColumnBtn}>
                 <Button

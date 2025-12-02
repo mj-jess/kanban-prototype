@@ -40,11 +40,11 @@ export default function KanbanColumn({ column }: Props) {
             </div>
 
             {column.tasks.length > 0 && (
-                <div className={styles.tasks}>
+                <ul className={styles.tasks}>
                     {column.tasks.map((task) => (
                         <KanbanCard key={task.id} task={task} columnId={column.id} />
                     ))}
-                </div>
+                </ul>
             )}
 
             <div className={styles.footer}>
