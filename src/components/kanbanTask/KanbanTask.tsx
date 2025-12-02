@@ -4,7 +4,7 @@ import { useModal } from '@/hooks';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { Button, Modal, Typography } from '@/ui';
 import { HiMiniBars3BottomLeft } from 'react-icons/hi2';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { kanbanActions } from '@/store/kanbanSlice';
 
 interface Props {
@@ -17,7 +17,6 @@ interface PlaceholderProps {
     show: boolean;
 }
 
-// Componente para o visual do placeholder
 const Placeholder = ({ show }: PlaceholderProps) => {
     return show ? <div className={styles.taskPlaceholder}></div> : null;
 };
@@ -45,16 +44,37 @@ export default function KanbanTask({ task, index, columnId }: Props) {
         setIsEditingDesc(false);
     };
 
+    const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('taskId', String(task.id));
+        e.dataTransfer.setData('fromColumn', String(columnId));
+
+        dispatch(kanbanActions.setDraggingTask(task.id));
+    };
+
+    const handleDragEnd = () => {
+        dispatch(kanbanActions.setDraggingTask(null));
+    };
+
     return (
         <>
-            {/* Placeholder para inserção ANTES falta logica booleana */}
+            {/* Placeholder antes (controlado pela Column) */}
             <Placeholder show={false} />
 
-            <div draggable className={styles.task} onClick={openModal}>
+            <div
+                draggable
+                className={`${styles.task} ${draggingTaskId === task.id ? styles.isDragging : ''}`}
+                onClick={() => {
+                    if (draggingTaskId) return;
+                    openModal();
+                }}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+            >
                 <Typography.p className={styles.title}>{task.title}</Typography.p>
             </div>
 
-            {/* Placeholder para inserção DEPOIS falta logica booleana */}
+            {/* Placeholder depois (controlado pela Column) */}
             <Placeholder show={false} />
 
             <Modal

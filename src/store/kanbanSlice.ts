@@ -66,6 +66,26 @@ export const kanbanSlice = createSlice({
             }
         },
 
+        /** 🔥 REORDER DENTRO DA MESMA COLUNA */
+        reorderTasksInColumn(
+            state,
+            action: PayloadAction<{
+                columnId: string;
+                sourceIndex: number;
+                destinationIndex: number;
+            }>,
+        ) {
+            const { columnId, sourceIndex, destinationIndex } = action.payload;
+
+            const column = state.columns.find((c) => c.id === columnId);
+            if (!column) return;
+
+            const tasks = column.tasks;
+
+            const [moved] = tasks.splice(sourceIndex, 1);
+            tasks.splice(destinationIndex, 0, moved);
+        },
+
         moveTaskWithIndex: (
             state,
             action: PayloadAction<{
