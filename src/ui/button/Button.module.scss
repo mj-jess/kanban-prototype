@@ -83,6 +83,7 @@
 /* ---------------- COLOR MAP ---------------- */
 .color-primary {
     --btn-bg: var(--primary);
+    --btn-bg-ghost: var(--primary);
     --btn-border: var(--primary);
     --btn-text: #ffffff;
     --btn-soft: var(--primary-soft);
@@ -90,6 +91,7 @@
 
 .color-secondary {
     --btn-bg: var(--secondary);
+    --btn-bg-ghost: var(--secondary);
     --btn-border: var(--secondary);
     --btn-text: #ffffff;
     --btn-soft: var(--secondary-soft);
@@ -97,6 +99,7 @@
 
 .color-tertiary {
     --btn-bg: #4b5563;
+    --btn-bg-ghost: #bfc1c4;
     --btn-border: #4b5563;
     --btn-text: #f9fafb;
     --btn-soft: rgba(75, 85, 99, 0.2);
@@ -104,6 +107,7 @@
 
 .color-success {
     --btn-bg: #22c55e;
+    --btn-bg-ghost: #22c55e;
     --btn-border: #22c55e;
     --btn-text: #ffffff;
     --btn-soft: rgba(34, 197, 94, 0.15);
@@ -111,6 +115,7 @@
 
 .color-danger {
     --btn-bg: #ef4444;
+    --btn-bg-ghost: #ef4444;
     --btn-border: #ef4444;
     --btn-text: #ffffff;
     --btn-soft: rgba(239, 68, 68, 0.15);
@@ -118,6 +123,7 @@
 
 .color-info {
     --btn-bg: #3ba9ff;
+    --btn-bg-ghost: #3ba9ff;
     --btn-border: #3ba9ff;
     --btn-text: #ffffff;
     --btn-soft: rgba(59, 169, 255, 0.15);
@@ -125,6 +131,7 @@
 
 .color-warning {
     --btn-bg: #f59e0b;
+    --btn-bg-ghost: #f59e0b;
     --btn-border: #f59e0b;
     --btn-text: #1c1c1c;
     --btn-soft: rgba(245, 158, 11, 0.15);
@@ -159,11 +166,11 @@
 /* GHOST */
 .variant-ghost {
     background: transparent;
-    color: var(--btn-bg);
+    color: var(--btn-bg-ghost);
 
     &:hover {
         background: var(--btn-soft);
-        color: var(--btn-bg);
+        color: var(--btn-bg-ghost);
     }
 }
 

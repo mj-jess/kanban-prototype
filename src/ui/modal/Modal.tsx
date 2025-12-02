@@ -6,22 +6,23 @@ import { Typography } from '../typography/Typography';
 interface ModalProps {
     isOpen: boolean;
     children: React.ReactNode;
+    className?: string;
     onClose: () => void;
     onSubmit: (e: FormEvent) => void;
 }
 
-export function Modal({ isOpen, children, onClose, onSubmit }: ModalProps) {
+export function Modal({ isOpen, className = '', children, onClose, onSubmit }: ModalProps) {
     if (!isOpen) return null;
 
     return (
         <div className={styles.backdrop} onClick={onClose}>
             <form
-                className={styles.modal}
                 onClick={(e) => e.stopPropagation()}
                 onSubmit={(e) => {
                     e.preventDefault();
                     onSubmit?.(e);
                 }}
+                className={className ? `${styles.modal} ${className}` : styles.modal}
             >
                 {children}
             </form>

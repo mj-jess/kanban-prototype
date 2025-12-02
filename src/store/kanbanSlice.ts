@@ -48,6 +48,18 @@ export const kanbanSlice = createSlice({
             }
         },
 
+        editTask: (state: KanbanState, action: PayloadAction<{ columnId: string; task: Task }>) => {
+            const col = state.columns.find((c) => c.id === action.payload.columnId);
+
+            if (col) {
+                const index = col.tasks.findIndex((t) => t.id === action.payload.task.id);
+
+                if (index !== -1) {
+                    col.tasks[index] = action.payload.task;
+                }
+            }
+        },
+
         updateTaskOrder: (
             state: KanbanState,
             action: PayloadAction<{ columnId: string; tasks: Task[] }>,

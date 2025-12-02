@@ -1,6 +1,6 @@
 @use '../../styles/tokens' as *;
 
-.card {
+.task {
     background: var(--bg-1);
     border: 1px solid var(--border);
     color: var(--text);
@@ -38,5 +38,21 @@
     .meta {
         font-size: 13px;
         color: var(--text-soft);
+    }
+}
+
+.taskModal {
+    .descriptionWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: var(--space-4);
+
+        .description {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            column-gap: var(--space-2);
+        }
     }
 }

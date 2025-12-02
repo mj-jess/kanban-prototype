@@ -17,7 +17,7 @@ export default function Dashboard() {
             <Typography.h1>Dashboard</Typography.h1>
             <Typography.p>Welcome to the dashboard! Here are some buttons:</Typography.p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 24 }}>
                 {variants.map((variant) => (
                     <div key={variant} style={{ display: 'flex', gap: 12 }}>
                         {buttons.map((color) => (
